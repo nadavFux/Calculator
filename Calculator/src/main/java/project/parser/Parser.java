@@ -9,26 +9,30 @@ import java.util.*;
 import java.util.Optional;
 
 public class Parser implements IParser {
-    private static final Map<String, Class<? extends IToken>> tokenMapping = Map.of(
-            "+", AdditionToken.class,
-            "-", SubtractionToken.class,
-            "*", MultToken.class,
-            "/", DivisionToken.class,
-            "(", OpenBracesToken.class,
-            ")", CloseBracesToken.class,
-            "sin", SinToken.class,
-            "cos", CosToken.class
-    );
+    private static final Map<String, Class<? extends IToken>> tokenMapping = createTokenMapping();
+
+    private static Map<String, Class<? extends IToken>> createTokenMapping() {
+        Map<String, Class<? extends IToken>> map = new HashMap<>();
+        map.put("+", AdditionToken.class);
+        map.put("-", SubtractionToken.class);
+        map.put("*", MultToken.class);
+        map.put("/", DivisionToken.class);
+        map.put("(", OpenBracesToken.class);
+        map.put(")", CloseBracesToken.class);
+        map.put("sin", SinToken.class);
+        map.put("cos", CosToken.class);
+        return Collections.unmodifiableMap(map);
+    }
 
     @Override
     public ArrayList<IToken> Parse(String input) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        var inlineInput = input.replaceAll("\\s+",""); // Delete all whitespace
+        String inlineInput = input.replaceAll("\\s+",""); // Delete all whitespace
 
-        var parsedSegments = new ArrayList<IToken>();
-        var currSegment = "";
+        ArrayList<IToken> parsedSegments = new ArrayList<>();
+        String currSegment = "";
         for (int i = 0; i < inlineInput.length(); i++) {
 
-            var singleCharClass = tokenMapping.get(String.valueOf(inlineInput.charAt(i)));
+            Class<? extends IToken> singleCharClass = tokenMapping.get(String.valueOf(inlineInput.charAt(i)));
             if (singleCharClass != null) {
                 Optional.of(currSegment)
                         .filter(s -> !s.isEmpty())

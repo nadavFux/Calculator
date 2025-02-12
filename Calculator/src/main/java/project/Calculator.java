@@ -1,9 +1,12 @@
 package project;
 
+import project.operands.NumberOperand;
 import project.parser.IParser;
+import project.tokens.IToken;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Calculator {
@@ -26,8 +29,8 @@ public class Calculator {
     }
 
     private void ExecuteCalculation(String input) throws Exception {
-        var parsedInput = parser.Parse(input);
-        var calculatedOutput = executor.Execute(parsedInput);
+        ArrayList<IToken> parsedInput = parser.Parse(input);
+        NumberOperand calculatedOutput = executor.Execute(parsedInput);
         inputOutput.WriteLine(String.valueOf(calculatedOutput.RawValue()));
     }
 
