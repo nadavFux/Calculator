@@ -6,6 +6,8 @@ import project.operands.NumberOperand;
 import project.parser.Parser;
 import project.tokens.*;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 // This is the only part I made a code assistent do for me in its entirety, was pretty cool, it almost got it right, fixed what was needed
@@ -19,7 +21,7 @@ class ParserTest {
 
     @Test
     void testBasicArithmetic() throws Exception {
-        var tokens = parser.Parse("1+2");
+        ArrayList<IToken> tokens = parser.Parse("1+2");
 
         assertEquals(3, tokens.size());
         assertInstanceOf(NumberOperand.class, tokens.get(0));
@@ -31,7 +33,7 @@ class ParserTest {
 
     @Test
     void testTrigonometricFunction() throws Exception {
-        var tokens = parser.Parse("sin(30)");
+        ArrayList<IToken> tokens = parser.Parse("sin(30)");
 
         assertEquals(4, tokens.size());
         assertInstanceOf(SinToken.class, tokens.get(0));
@@ -43,7 +45,7 @@ class ParserTest {
 
     @Test
     void testComplexExpression() throws Exception {
-        var tokens = parser.Parse("2*sin(30)+1");
+        ArrayList<IToken> tokens = parser.Parse("2*sin(30)+1");
 
         assertEquals(8, tokens.size());
         assertInstanceOf(NumberOperand.class, tokens.get(0));
@@ -57,8 +59,8 @@ class ParserTest {
 
     @Test
     void testWhitespaceHandling() throws Exception {
-        var tokens1 = parser.Parse("1 + 2");
-        var tokens2 = parser.Parse("1+2");
+        ArrayList<IToken> tokens1 = parser.Parse("1 + 2");
+        ArrayList<IToken> tokens2 = parser.Parse("1+2");
 
         assertEquals(tokens1.size(), tokens2.size());
         for (int i = 0; i < tokens1.size(); i++) {
@@ -68,7 +70,7 @@ class ParserTest {
 
     @Test
     void testMultiDigitNumbers() throws Exception {
-        var tokens = parser.Parse("123+456");
+        ArrayList<IToken> tokens = parser.Parse("123+456");
 
         assertEquals(3, tokens.size());
         assertInstanceOf(NumberOperand.class, tokens.get(0));
@@ -80,7 +82,7 @@ class ParserTest {
 
     @Test
     void testAllOperators() throws Exception {
-        var tokens = parser.Parse("1+2-3*4/5");
+        ArrayList<IToken> tokens = parser.Parse("1+2-3*4/5");
 
         assertEquals(9, tokens.size());
         assertInstanceOf(AdditionToken.class, tokens.get(1));
@@ -91,7 +93,7 @@ class ParserTest {
 
     @Test
     void testNestedTrigFunctions() throws Exception {
-        var tokens = parser.Parse("sin(cos(30))");
+        ArrayList<IToken> tokens = parser.Parse("sin(cos(30))");
 
         assertEquals(7, tokens.size());
         assertInstanceOf(SinToken.class, tokens.get(0));
